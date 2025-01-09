@@ -126,22 +126,28 @@ def main():
 
     if sexChange == 'женщинам':
         catalogChange = input("Выберите категорию товара:\nБлузки и рубашки\nБрюки\nВерхняя одежда\nДжемперы, водолазки и кардиганы\nКомбинезоны\nКостюмы\nФутболки и топы\nЮбки\n\nМой выбор: ").lower()
-    else:
+    elif sexChange == 'мужчинам':
         catalogChange = input("Выберите категорию товара:\nБрюки\nВерхняя одежда\nДжемперы, водолазки и кардиганы\nДжинсы\nКостюмы\n\nМой выбор: ").lower()
+    else:
+        print("Введите пожалуйста корректный текст")
 
     convertedSexChange = None
     convertedCatalogChange = None
-
-    # Поиск значения для пола
-    for item in Сonverter:
-        if sexChange in item:
-            convertedSexChange = item[sexChange]
-            break
 
     # Поиск значения для категории
     for item in Сonverter:
         if catalogChange in item:
             convertedCatalogChange = item[catalogChange]
+            break
+
+    if not convertedCatalogChange:
+        print("Введите пожалуйста корректный текст")
+        return
+
+    # Поиск значения для пола
+    for item in Сonverter:
+        if sexChange in item:
+            convertedSexChange = item[sexChange]
             break
 
     # Вызываем функцию для парсинга данных с сайта и получаем выводы

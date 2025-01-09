@@ -12,7 +12,7 @@ import numpy as np
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from converterWB import Сonverter
+from converterSteam import Сonverter
 from selenium.common.exceptions import NoSuchElementException
 
 
@@ -145,6 +145,10 @@ def main():
         if langChange in item:
             convertedLangChange = item[langChange]
             break
+
+    if not convertedLangChange:
+        print("Введите пожалуйста корректный текст")
+        return
 
     # Вызываем функцию для парсинга данных с сайта и получаем выводы
     products, total_count = parse_steam(convertedLangChange)
