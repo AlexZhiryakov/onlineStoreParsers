@@ -16,6 +16,24 @@ from converterWB import Сonverter
 from selenium.common.exceptions import NoSuchElementException
 
 
+def priceExtraction(products):
+    # Извлекаем цены из списка продуктов
+    prices = []
+    for item in products:
+        price_str = item['price']
+        if price_str == "Бесплатно":
+            prices.append(0)
+        elif price_str == "Цена не найдена":
+            continue  # Пропускаем элементы с "Цена не найдена"
+        else:
+            price_num = price_str.replace(' ', '').replace('руб', '')  # Убираем пробелы и "руб"
+            price_num = price_num.replace(',', '.')
+            try:
+                prices.append(float(price_num))
+            except ValueError:
+                print(f"Не удалось преобразовать цену: {price_num}")
+    return prices
+
 def parse_steam(language):
     url = f'https://store.steampowered.com/search/?sort_by=Released_DESC&filter=popularnew&supportedlang={language}&os=win&ndl=1'
     products = []
@@ -141,21 +159,7 @@ def main():
     # Вызов функции для сохранения собранных данных в файл
     save_to_file(products, args.filename, args.format, args.sort)
 
-    # Извлекаем цены из списка продуктов
-    prices = []
-    for item in products:
-        price_str = item['price']
-        if price_str == "Бесплатно":
-            prices.append(0)
-        elif price_str == "Цена не найдена":
-            continue  # Пропускаем элементы с "Цена не найдена"
-        else:
-            price_num = price_str.replace(' ', '').replace('руб', '')  # Убираем пробелы и "руб"
-            price_num = price_num.replace(',', '.')
-            try:
-                prices.append(float(price_num))
-            except ValueError:
-                print(f"Не удалось преобразовать цену: {price_num}")
+    prices = priceExtraction(products)
 
     # Проверяем, есть ли цены для вычисления медианы
     if prices:
